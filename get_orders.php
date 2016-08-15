@@ -99,10 +99,21 @@ switch ($type_map->$type) {
                             <div class=\"weui_cell\">
                                 <div class=\"weui_cell_bd weui_cell_primary\">
                                 </div>
-                                <div class=\"weui_cell_ft\">" . date('l dS \of F Y h:i:s A') . "</div>
+                                <div class=\"weui_cell_ft\">未付款</div>
                             </div>";
 
                 $result .= $result_tmp;
+
+                $result .= "<div class=\"weui_cell\">
+                                <div class=\"weui_cell_bd weui_cell_primary\"></div>
+                                <div class=\"weui_cell_ft\">
+                                    <div class=\"button_sp_area\">
+                                        <a href=\"javascript:;\" class=\"weui_btn weui_btn_mini weui_btn_primary\">修改订单</a>
+                                        <a href=\"javascript:;\" class=\"weui_btn weui_btn_mini weui_btn_plain_default\">发送订单</a>
+                                        <a href=\"javascript:;\" class=\"weui_btn weui_btn_mini weui_btn_default\">删除订单</a>
+                                    </div>
+                                </div>
+                            </div>";
 
                 $result .= "
                         </div>

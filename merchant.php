@@ -464,7 +464,7 @@
             dataType: "text",
             success: function (data) {
                 console.log(data);
-                //$(order_list_div_id).html(data);
+                $(order_list_div_id).html(data);
             }
         });
     });

@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-foreach ($_POST['checkbox'] as $good_id){
+foreach ($_POST['checkbox'] as $good_id) {
     $sql = "select owner from goods where id='{$good_id}' limit 1";
     $result = $conn->query($sql);
 
@@ -74,30 +74,30 @@ foreach ($_POST['checkbox'] as $good_id) {
     if ($conn->query($sql) === TRUE) {
 //        echo "execute:" . $sql . " successfully";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $sql . " < br>" . $conn->error;
     }
 
-    if($good_id=="-1"){//for post fee
-        $good_price += $_POST[$goods_amount_prefix.$good_id];
+    if ($good_id == "-1") {//for post fee
+        $good_price += $_POST[$goods_amount_prefix . $good_id];
         continue;
     }
 
-    $sql = "select price from goods where id='{$good_id}'";
+    $sql = "select price from goods where id = '{$good_id}'";
     $result = $conn->query($sql);
-    if($result->num_rows > 0){
+    if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $good_price += $row['price'] * $_POST[$goods_amount_prefix.$good_id];
-    }else{
+        $good_price += $row['price'] * $_POST[$goods_amount_prefix . $good_id];
+    } else {
         echo "0 results";
     }
 }
 
-$sql = "insert order_status(order_id, customer, good_price, post_fee, state, owner) values ({$order_id}, {$customer}, {$good_price}, {$post_fee}, {$order_status}, {$owner})";
+$sql = "insert order_status(order_id, customer, good_price, post_fee, state, owner, create_date) values({$order_id}, {$customer}, {$good_price}, {$post_fee}, {$order_status}, {$owner}, '" . date("Y-m-d H:i:s") . "')";
 
-if($conn->query($sql) === TRUE){
+if ($conn->query($sql) === TRUE) {
 
-}else{
-    echo "Error: " . $sql . "<br>" . $conn->error;
+} else {
+    echo "Error: " . $sql . " < br>" . $conn->error;
 }
 
 echo $url_tpl . $order_id;

@@ -209,6 +209,18 @@
     color: black;
 }
 
+.order-header {
+    padding: 35px 0;
+}
+
+.order-title {
+    text-align: center;
+    font-size: 34px;
+    color: #3cc51f;
+    font-weight: 400;
+    margin: 0 15%;
+}
+
 .order-details {
     position: relative;
     display: block;

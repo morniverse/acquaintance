@@ -23,7 +23,7 @@
     <div class="gogogobuybuybuy_paybar">
         <a href="#" class="gogogobuybuybuy_paybar_price_item" id="total_price">
         </a>
-        <a href="#" class="gogogobuybuybuy_paybar_item">
+        <a href="#" class="gogogobuybuybuy_paybar_item" id="pay_button">
             立即支付
         </a>
     </div>
@@ -58,6 +58,18 @@
                 $('#goods_list').html(data['goods_list_str']);
                 $('#total_price').html(data['total_price']);
                 $('title').html(data['owner']);
+            }
+        });
+    });
+
+    $('#pay_button').on('click', function(){
+        $.ajax({
+            url: 'update_order.php',
+            data: "order_id=<?php echo $_GET['order_id'];?>&type=1",
+            success: function(data){
+                $.toast("支付成功", function() {
+                    console.log('close');
+                });
             }
         });
     });
