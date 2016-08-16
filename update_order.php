@@ -1,6 +1,7 @@
 <?php
 
-
+$address = $_GET['address'];
+$cell = $_GET['cell'];
 $type = $_GET['type'];
 $order_id = $_GET['order_id'];
 
@@ -22,7 +23,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "update order_status set state='1',pay_date='".date("Y-m-d H:i:s")."' where order_id='{$order_id}'";
+$sql = "update order_status set state='1',pay_date='".date("Y-m-d H:i:s")."',address={$address},cell={$cell} where order_id='{$order_id}'";
 $result = $conn->query($sql);
 if($result === TRUE){
 

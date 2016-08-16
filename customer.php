@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="jquery-weui/dist/css/jquery-weui.css"/>
     <script src="jquery-weui/dist/lib/jquery-2.1.4.js"></script>
     <script src="jquery-weui/dist/js/jquery-weui.js"></script>
+    <script src="jquery.textchange.min.js"></script>
 
 </head>
 <body ontouchstart>
@@ -23,7 +24,7 @@
     <div class="gogogobuybuybuy_paybar">
         <a href="#" class="gogogobuybuybuy_paybar_price_item" id="total_price">
         </a>
-        <a href="#" class="gogogobuybuybuy_paybar_item" id="pay_button">
+        <a href="#" class="gogogobuybuybuy_paybar_item_disabled" id="pay_button">
             立即支付
         </a>
     </div>
@@ -37,6 +38,20 @@
             <form id="order_form">
                 <div class="weui_panel weui_panel_access">
                     <div class="weui_panel_bd" id="goods_list">
+                    </div>
+                </div>
+                <div class="weui_cells weui_cells_form">
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">收货地址</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" id="address" name="address" type="text" placeholder="请输入收货地址">
+                        </div>
+                    </div>
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">手机号码</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input" id="cell" name="cell" type="tel" placeholder="请输入手机号码">
+                        </div>
                     </div>
                 </div>
             </form>
@@ -60,12 +75,28 @@
                 $('title').html(data['owner']);
             }
         });
+
+        $('.weui_input').bind('hastext', function () {
+            if($('#address').val() && $('#cell').val()){
+                $('#pay_button').removeClass('gogogobuybuybuy_paybar_item_disabled');
+                $('#pay_button').addClass('gogogobuybuybuy_paybar_item');
+            }
+        });
+
+        $('.weui_input').bind('notext', function () {
+            if(!$('#address').val() || !$('#cell').val()){
+                $('#pay_button').removeClass('gogogobuybuybuy_paybar_item');
+                $('#pay_button').addClass('gogogobuybuybuy_paybar_item_disabled');
+            }
+        });
     });
 
     $('#pay_button').on('click', function(){
+        var data = $('#goods_form').serialize();
+
         $.ajax({
             url: 'update_order.php',
-            data: "order_id=<?php echo $_GET['order_id'];?>&type=1",
+            data: data+"&order_id=<?php echo $_GET['order_id'];?>&type=1",
             success: function(data){
                 $.toast("支付成功", function() {
                     console.log('close');
