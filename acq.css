@@ -1,0 +1,305 @@
+@charset "UTF-8";
+.acq_order_control_panel {
+	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", serif;
+	font-size: 40px;
+	font-style: normal;
+	line-height: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #060606;
+	letter-spacing: normal;
+	text-align: center;
+	vertical-align: top;
+	word-spacing: normal;
+	white-space: normal;
+	clear: both;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 0%;
+	padding-bottom: 0%;
+	padding-left: 0%;
+	border-left: thin ridge #B9B9B9;
+	border-right: thin ridge #B9B9B9;
+	border-bottom: thin solid #303030;
+	border-top: thin ridge #B9B9B9;
+	overflow: visible;
+	position: fixed;
+	visibility: visible;
+	z-index: 100;
+	height: 10%;
+	padding-right: 0%;
+	width: 100%;
+	background-color: #FFFFFF;
+	top: 0%;
+	float: none;
+}
+body, html {
+	height: 100%;
+	width: 100%;
+	padding-top: 0%;
+	padding-right: 0%;
+	padding-bottom: 0%;
+	padding-left: 0%;
+	margin-top: 0%;
+	margin-right: 0%;
+	margin-bottom: 0%;
+	margin-left: 0%;
+	position: relative;
+}
+.acq_col_3 {
+	width: 33.33%;
+	height: 100%;
+}
+.acq_row {
+	display: table;
+	vertical-align: middle;
+	text-shadow: 0px 0px #000000;
+	color: undefined;
+}
+.acq_col {
+	display: table-cell;
+	font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+	vertical-align: middle;
+	font-style: normal;
+	text-align: center;
+}
+.acq_col_border {
+	border-right: thin solid #284081;
+	border-left-width: thin;
+	border-left-color: #000000;
+	border-collapse: collapse;
+}
+.acq_col_control_panel{
+	color: #FFFFFF;
+	background-color: #7A7C91;
+}
+.acq_bottom_panel {
+	width: 100%;
+	height: 10%;
+	bottom: 0px;
+	border-top: thin solid #B6B6B6;
+	z-index: 100;
+	background-color: #FFFFFF;
+	position: fixed;
+	font-size: 40px;
+	color: #7F7F7F;
+}
+.acq_background {
+	background-color: #DADADA;
+	z-index: -1;
+	top: 0%;
+	width: 100%;
+	height: 100%;
+	padding-top: 5%;
+}
+.acq_form_brief_info {
+	font-size: 40px;
+	margin-left: 4%;
+	margin-right: 4%;
+	padding-top: 3%;
+	padding-bottom: 3%;
+	overflow: hidden;
+}
+.acq_form_brief_info_identify {
+	float: left;
+	width: 55%;
+	border-bottom: thin solid #A7A698;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+.acq_form_brief_info_info {
+	float: right;
+	width: 35%;
+	border-bottom: thin solid #A7A698;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+.acq_border_align {
+	padding-top: 2%;
+	padding-right: 2%;
+	padding-bottom: 2%;
+	padding-left: 2%;
+}
+.acq_order_summary_tab {
+	background-color: #FFFFFF;
+	font-size: 30px;
+}
+.acq_uncontent{
+	text-align: center;
+	vertical-align: middle;
+	height: 150px;
+	line-height: 150px;
+	background-color: #EAEAEA;
+	color: #BCBCBC;
+}
+.acq_section_bar {
+	background-color: #DADADA;
+	font-size: 25px;
+	z-index: 100;
+	width: 100%;
+	color: #969696;
+}
+.acq_section_bar_position {
+	margin-top: 10%;
+}
+.acq_section_background {
+	width: 100%;
+	background-color: #FFFFFF;
+	padding-bottom: 5%;
+	overflow: hidden;
+	font-size: 40px;
+}
+.acq_good_list_uncontent {
+	height: 400px;
+	line-height: 400px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 30px;
+	color: #BCBCBC;
+}
+
+.acq_form_item {
+	color: #989898;
+	font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+	font-size: 40px;
+	border-bottom-color: #D2D2D2;
+	border-bottom-style: solid;
+	margin-left: 4%;
+	margin-right: 4%;
+	padding-top: 3%;
+	padding-bottom: 3%;
+	overflow: hidden;
+}
+
+.acq_good_pic {
+	float: left;
+	padding-left: 1%;
+	padding-right: 1%;
+	width: 25%;
+}
+
+.acq_good_details {
+	float: left;
+	padding-left: 1%;
+	padding-right: 1%;
+	width: 75%;
+}
+
+.acq_good_details_title {
+}
+
+.acq_good_details_description {
+	color: #ABABAB;
+	font-size: 30px;
+}
+
+.acq_good_details_amount_price_detail {
+	color: #ABABAB;
+	font-size: 30px;
+	overflow: hidden;
+}
+
+.acq_good_details_amount_price_detail_amount {
+	float: left;
+}
+
+.acq_good_details_amount_price_detail_price {
+	float: right;
+	text-align: right;
+}
+
+.acq_good_billing {
+	margin-left: 4%;
+	margin-right: 4%;
+	padding-top: 2%;
+	overflow: hidden;
+	font-size: 40px;
+	color: #888888;
+	text-align: right;
+}
+
+.acq_good_billing_total {
+	color: #00A40B;
+	font-size: 70px;
+	display: inline;
+}
+
+.acq_good_billing_postfee {
+	font-size: 30px;
+	color: #AEAEAE;
+	display: inline;
+}
+
+.acp_input_without_border {
+	border-width: 0px;
+	width: 40%;
+	height: 55px;
+	font-size: 30px;
+}
+
+.acq_add_size {
+	height: 160px;
+	line-height: 160px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 40px;
+}
+
+.acq_last_operation {
+	height: 20%;
+	text-align: center;
+	padding-top: 10%;
+}
+
+button.btn {
+	font-size: 40px;
+	width: 70%;
+}
+
+button.btn.btn-primary {
+	background-color: #FFFFFF;
+	color: #C7C7C7;
+}
+
+.acq_payment_title {
+	height: 20%;
+	vertical-align: middle;
+	text-align: center;
+	background-color: #23CB3C;
+	position: fixed;
+	width: 100%;
+	left: 50%;
+	margin-left: -50%;
+	top: 0%;
+	display: inline-block;
+	padding-top: 5%;
+}
+.acq_payment_status {
+	font-size: 40px;
+	background-color: #09B836;
+	text-align: center;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	color: #FFFFFF;
+	margin-top: 25%;
+}
+
+.acq_userpic {
+	border-radius: 50%;
+}
+
+/*tab bar active status*/
+.acq_bottom_panel_active {
+	color: #12DB35;	
+}
+.acq_bottom_panel_unactive {
+	color: #7F7F7F;	
+}
+/*---------------------*/
+
+/*for common bootstrap component*/
+/*span.glyphicon.glyphicon-shopping-cart{
+	font-size: 25px;
+}*/

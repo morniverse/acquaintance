@@ -67,19 +67,19 @@ $post_fee = 0;
 $order_status = 0;
 foreach ($_POST['checkbox'] as $good_id) {
 
-    $sql = "insert orders (order_id, good_id, amount, owner, state) values ({$order_id}, {$good_id}, {$_POST[$goods_amount_prefix.$good_id]}, {$owner}, 0)";
-
+    if ($good_id == "-1") {//for post fee
+        $good_price += $_POST[$goods_amount_prefix . $good_id];
+        $sql = "insert orders (order_id, good_id, amount, owner, state) values ({$order_id}, {$good_id}, {$_POST[$goods_amount_prefix.$good_id]}, {$owner}, 2)";
+        continue;
+    }else {
+        $sql = "insert orders (order_id, good_id, amount, owner, state) values ({$order_id}, {$good_id}, {$_POST[$goods_amount_prefix.$good_id]}, {$owner}, 0)";
+    }
 //    echo $sql."\n";
 
     if ($conn->query($sql) === TRUE) {
 //        echo "execute:" . $sql . " successfully";
     } else {
         echo "Error: " . $sql . " < br>" . $conn->error;
-    }
-
-    if ($good_id == "-1") {//for post fee
-        $good_price += $_POST[$goods_amount_prefix . $good_id];
-        continue;
     }
 
     $sql = "select price from goods where id = '{$good_id}'";

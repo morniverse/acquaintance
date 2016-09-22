@@ -92,14 +92,12 @@
     });
 
     $('#pay_button').on('click', function(){
-        var data = $('#goods_form').serialize();
 
         $.ajax({
             url: 'update_order.php',
-            data: data+"&order_id=<?php echo $_GET['order_id'];?>&type=1",
+            data: "address="+$('#address').val()+"&cell="+$('#cell').val()+"&order_id=<?php echo $_GET['order_id'];?>&type=0",
             success: function(data){
                 $.toast("支付成功", function() {
-                    console.log('close');
                 });
             }
         });
