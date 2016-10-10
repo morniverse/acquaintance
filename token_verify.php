@@ -1,7 +1,7 @@
 <?php
 traceHttp();
 
-define("TOKEN", "3MO2Rn5i2VEr6S7e59");
+define("TOKEN", "zhaoshuren");
 $wechatObj = new wechatCallbackapiTest();
 if (isset($_GET['echostr'])) {
     $wechatObj->valid();

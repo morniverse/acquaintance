@@ -1,85 +1,142 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>WOQU</title>
-    <link rel="stylesheet" href="weui/dist/style/weui.css"/>
-    <link rel="stylesheet" href="weui/dist/example/example.css"/>
+    <meta charset="UTF-8" />
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>WeUI-Uploader</title>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.3.0/weui.css" />
 </head>
-<body ontouchstart>
-<!--<div class="container" id="container"></div>-->
-<!--<script type="text/html" id="tpl_tabbar">-->
-
-<div class="weui_tab">
-    <div class="weui_tab_bd">
-        <div id="tab1" class="weui_tab_bd_item weui_tab_bd_item_active">
-            <h1 class="doc-head">微信</h1>
-        </div>
-        <div id="tab2" class="weui_tab_bd_item">
-            <h1 class="doc-head">通讯录</h1>
-        </div>
-        <div id="tab3" class="weui_tab_bd_item">
-            <h1 class="doc-head">发现</h1>
-        </div>
-        <div id="tab4" class="weui_tab_bd_item">
-            <h1 class="doc-head">我的</h1>
-        </div>
-    </div>
-    <div class="weui_tabbar">
-        <a href="#tab1" class="weui_tabbar_item weui_bar_item_on">
-            <div class="weui_tabbar_icon">
-                <img src="./img/icon_nav_button.png" alt="">
+<body>
+<div class="container">
+    <div class="weui_cells_title">上传</div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <div class="weui_uploader">
+                    <div class="weui_uploader_hd weui_cell">
+                        <div class="weui_cell_bd weui_cell_primary">图片上传</div>
+                        <div class="weui_cell_ft js_counter">0/6</div>
+                    </div>
+                    <div class="weui_uploader_bd">
+                        <ul class="weui_uploader_files">
+                            <!-- 预览图插入到这 --> </ul>
+                        <div class="weui_uploader_input_wrp">
+                            <input class="weui_uploader_input js_file" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple=""></div>
+                    </div>
+                </div>
             </div>
-            <p class="weui_tabbar_label">微信</p>
-        </a>
-        <a href="#tab2" class="weui_tabbar_item">
-            <div class="weui_tabbar_icon">
-                <img src="./img/icon_nav_msg.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">通讯录</p>
-        </a>
-        <a href="#tab3" class="weui_tabbar_item">
-            <div class="weui_tabbar_icon">
-                <img src="./img/icon_nav_article.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">发现</p>
-        </a>
-        <a href="#tab4" class="weui_tabbar_item">
-            <div class="weui_tabbar_icon">
-                <img src="./img/icon_nav_cell.png" alt="">
-            </div>
-            <p class="weui_tabbar_label">我</p>
-        </a>
+        </div>
     </div>
 </div>
-<script src="weui/dist/example/zepto.min.js"></script>
-<script src="weui/dist/example/router.min.js"></script>
-<script src="weui/dist/example/example.js"></script>
-
+<div class="weui_dialog_alert" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"> <strong class="weui_dialog_title">警告</strong>
+        </div>
+        <div class="weui_dialog_bd">弹窗内容，告知当前页面信息等</div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/zepto/1.1.6/zepto.min.js"></script>
+</body>
+</html>
 <script>
-    $(function() {
+    $.weui = {};
+    $.weui.alert = function(options){
+        options = $.extend({title: '警告', text: '警告内容'}, options);
+        var $alert = $('.weui_dialog_alert');
+        $alert.find('.weui_dialog_title').text(options.title);
+        $alert.find('.weui_dialog_bd').text(options.text);
+        $alert.on('touchend click', '.weui_btn_dialog', function(){
+            $alert.hide();
+        });
+        $alert.show();
+    };
 
-        //var i=0;
-        $(".weui_tabbar a").bind("click", function(){
+    $(function () {
+        // 允许上传的图片类型
+        var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+        // 1024KB，也就是 1MB
+        var maxSize = 1024 * 1024 * 128;
+        // 图片最大宽度
+        var maxWidth = 300;
+        // 最大上传图片数量
+        var maxCount = 6;
+        $('.js_file').on('change', function (event) {
+            var files = event.target.files;
 
-            //css操作
-            //alert(i++);
-            //操作导航栏
-            $(".weui_bar_item_on").removeClass('weui_bar_item_on');
-            //console.log($(this).find("a"));
-            $(this).addClass("weui_bar_item_on");
+            // 如果没有选中文件，直接返回
+            if (files.length === 0) {
+                return;
+            }
 
-            //操作内容切换
-            $(".weui_tab_bd .weui_tab_bd_item_active").removeClass('weui_tab_bd_item_active');
-            var data_toggle =jQuery(this).attr("href");
-            $(data_toggle).addClass("weui_tab_bd_item_active");
-            // $(this).addClass("weui_tab_bd_item_active");
+            for (var i = 0, len = files.length; i < len; i++) {
+                var file = files[i];
+                var reader = new FileReader();
 
+                // 如果类型不在允许的类型范围内
+                if (allowTypes.indexOf(file.type) === -1) {
+                    $.weui.alert({text: '该类型不允许上传'});
+                    continue;
+                }
+
+                if (file.size > maxSize) {
+                    $.weui.alert({text: '图片太大，不允许上传'});
+                    continue;
+                }
+
+                if ($('.weui_uploader_file').length >= maxCount) {
+                    $.weui.alert({text: '最多只能上传' + maxCount + '张图片'});
+                    return;
+                }
+
+                reader.onload = function (e) {
+                    var img = new Image();
+                    img.onload = function () {
+                        // 不要超出最大宽度
+                        var w = Math.min(maxWidth, img.width);
+                        // 高度按比例计算
+                        var h = img.height * (w / img.width);
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        // 设置 canvas 的宽度和高度
+                        canvas.width = w;
+                        canvas.height = h;
+                        ctx.drawImage(img, 0, 0, w, h);
+                        var base64 = canvas.toDataURL('image/png');
+
+                        // 插入到预览区
+                        var $preview = $('<li class="weui_uploader_file weui_uploader_status" style="background-image:url(' + base64 + ')"><div class="weui_uploader_status_content">0%</div></li>');
+                        $('.weui_uploader_files').append($preview);
+                        var num = $('.weui_uploader_file').length;
+                        $('.js_counter').text(num + '/' + maxCount);
+
+                        // 然后假装在上传，可以post base64格式，也可以构造blob对象上传，也可以用微信JSSDK上传
+
+                        var progress = 0;
+                        function uploading() {
+                            $preview.find('.weui_uploader_status_content').text(++progress + '%');
+                            if (progress < 100) {
+                                setTimeout(uploading, 30);
+                            }
+                            else {
+                                // 如果是失败，塞一个失败图标
+                                //$preview.find('.weui_uploader_status_content').html('<i class="weui_icon_warn"></i>');
+                                $preview.removeClass('weui_uploader_status').find('.weui_uploader_status_content').remove();
+                            }
+                        }
+                        setTimeout(uploading, 30);
+                    };
+
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
         });
     });
-
+    //# sourceURL=pen.js
 </script>
-
 </body>
 </html>
