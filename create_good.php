@@ -27,11 +27,11 @@
                                        accept="image/jpg,image/jpeg,image/png,image/gif" multiple/>
                             </li>
                         </ul>
-                        
-<!--                        <div class="acq_uploader_input_wrp">-->
-<!--                            <input class="acq_uploader_input js_file" type="file"-->
-<!--                                   accept="image/jpg,image/jpeg,image/png,image/gif" multiple=""/>-->
-<!--                        </div>-->
+
+                        <!--                        <div class="acq_uploader_input_wrp">-->
+                        <!--                            <input class="acq_uploader_input js_file" type="file"-->
+                        <!--                                   accept="image/jpg,image/jpeg,image/png,image/gif" multiple=""/>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
             </div>

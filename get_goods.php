@@ -101,20 +101,29 @@
 
 include 'DataBase.php';
 
+$cur_good_page_size = $_GET['cur_good_page_size'];
+
+$actual_page_step = 0;
+$page_step = 5;
+$json = array();
+
 $db = new DataBase;
 
 $db->DB_Initialize();
 
-$sql = "select id,name,price,size,pic from goods where owner='1';";
+$sql = "select id,name,price,size,pic from goods where owner='1' order by id desc limit {$page_step} offset {$cur_good_page_size};";
 $result = $db->getConn()->query($sql);
 $goods_str = "";
-
+$actual_page_step = $result->num_rows;
 if ($result->num_rows > 0) {
     // output data of each row
     while ($row = $result->fetch_assoc()) {
-        $sql = "select pic_str from goods_pics where id='" . $row['pic'] . "';";
+
+        $sql = "select pic_str_small from goods_pics where id='" . $row['pic'] . "';";
         $result_pic = $db->getConn()->query($sql);
         $row_pic = $result_pic->fetch_assoc();
+
+        $row['pic_str_small'] = $row_pic['pic_str_small'];
 
         $goods_str .= "<div class=\"acq_form_item\">
             <div class=\"acq_good_checkbox\">
@@ -125,7 +134,7 @@ if ($result->num_rows > 0) {
                 </div>
             </div>
             <div class=\"acq_good_pic\">
-                <img src=\"" . $row_pic['pic_str'] . "\" class=\"acq_goodpic\" alt=\"\"/>
+                <img src=\"" . $row_pic['pic_str_small'] . "\" class=\"acq_goodpic\" alt=\"\"/>
             </div>
             <div class=\"acq_good_details\">
                 <div class=\"acq_good_details_title\">" . $row['name'] . "</div>
@@ -135,7 +144,7 @@ if ($result->num_rows > 0) {
                         <div class=\"acq_input\">
                             <div class=\"acq_info_prefix acq_info_prefix_goodlist\">价格&yen;
                             </div>
-                            <input class=\"acq_input_suffix\" type=\"number\" name=\"price\" value=\"" . $row['price'] . "\">
+                            <input class=\"acq_input_suffix acq_price\" type=\"number\" name=\"price_" . $row['id'] . "\" value=\"" . $row['price'] . "\">
                             </input>
                         </div>
                     </div>
@@ -144,7 +153,7 @@ if ($result->num_rows > 0) {
                             <div class=\"acq_info_prefix acq_plus_minus_goodlist acq_minus_goodlist\">
                                 <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span>
                             </div>
-                            <input class=\"acq_input_suffix\" type=\"number\" name=\"amount_" . $row['id'] . "\" value=\"1\" disabled>
+                            <input class=\"acq_input_suffix acq_amount\" type=\"number\" name=\"amount_" . $row['id'] . "\" value=\"1\">
                             </input>
                             <div class=\"acq_info_prefix acq_plus_minus_goodlist acq_plus_goodlist\">
                                 <span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></span>
@@ -154,6 +163,8 @@ if ($result->num_rows > 0) {
                 </div>
             </div>
         </div>";
+
+        $json[] = $row;
     }
 
     $goods_str .= "<div class=\"acq_border_align acq_section_bar acq_section_bar_position\"></div>
@@ -163,4 +174,8 @@ if ($result->num_rows > 0) {
 
 $db->DB_Cleanup();
 
-echo $goods_str;
+
+//$json['goods_str'] = $goods_str;
+//$json['page_step'] = $actual_page_step;
+
+echo json_encode($json);

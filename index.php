@@ -52,6 +52,10 @@
         </div>
         <div class="acq_section_bar acq_border_align">商品列表</div>
         <form class="acq_section_background " id="good_list"><!--acq_good_list_uncontent-->
+<!--            <div class="acq_circlediv acq_checkbox_small acq_checkbox_checked">-->
+<!--                <span class="glyphicon glyphicon-ok glyphicon-ok-small" aria-hidden="true"></span>-->
+<!--            </div>-->
+<!--            <div class="acq_circlediv acq_checkbox_small"></div>-->
             <!--暂无可选商品，请添加-->
             <!--        <div class="acq_form_item">-->
             <!--            <div class="acq_good_checkbox">-->

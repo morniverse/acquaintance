@@ -46,12 +46,14 @@ $db->DB_Initialize();
 $good_name = $_POST['good_name'];
 $size_price_pair_count = $_POST['size_price_pair_count'];
 $good_pic = $_POST['good_pic'];
+$good_pic_small = $_POST['good_pic_small'];
 $last_id = -1;
 if ($size_price_pair_count == 0) {
 
     $price_only = $_POST['price_only'];
 
-    $sql = "INSERT INTO goods_pics (pic_str) VALUES ('" . $good_pic . "');";
+    echo "good_pic_small:" . $good_pic_small . "\n";
+    $sql = "INSERT INTO goods_pics (pic_str, pic_str_small) VALUES ('" . $good_pic . "', '" . $good_pic_small . "');";
 
     if ($db->getConn()->query($sql) === TRUE) {
         echo "New record created successfully";
@@ -69,7 +71,7 @@ VALUES ('1', '" . $good_name . "', '" . $price_only . "', '" . "n/a" . "', '" . 
         echo "Error: " . $sql . "<br>" . $db->getConn()->error;
     }
 } else {
-    $sql = "INSERT INTO goods_pics (pic_str) VALUES ('" . $good_pic . "');";
+    $sql = "INSERT INTO goods_pics (pic_str, pic_str_small) VALUES ('" . $good_pic . "', '" . $good_pic_small . "');";
 
     if ($db->getConn()->query($sql) === TRUE) {
         echo "New record created successfully";

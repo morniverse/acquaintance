@@ -340,7 +340,7 @@ $type_map->title_finished = 2;
 $result = "";
 switch ($type_map->$type) {
     case 0: {
-        $sql = "select order_id, customer, good_price, post_fee, create_date from order_status where owner='{$_GET['owner']}' and state='0'";
+        $sql = "select order_id, customer, good_price, post_fee, create_date from order_status where owner='{$_GET['owner']}' and state='0' order by id desc";
         $order_result = $db->getConn()->query($sql);
         if ($order_result->num_rows > 0) {
             while ($order_row = $order_result->fetch_assoc()) {
@@ -366,23 +366,28 @@ switch ($type_map->$type) {
                 </div>";
 
 
-                $sql = "select good_id, amount from orders where order_id='{$order_row['order_id']}'";
+                $sql = "select good_id, amount from orders where order_id='{$order_row['order_id']}' order by id desc";
                 $good_result = $db->getConn()->query($sql);
                 if ($good_result->num_rows > 0) {
                     while ($good_row = $good_result->fetch_assoc()) {
 
-                        $sql = "select owner, name, size from goods where id='{$good_row['good_id']}'";
+                        $sql = "select owner, name, size, price, pic from goods where id='{$good_row['good_id']}'";
                         $goods = $db->getConn()->query($sql);
                         if ($goods->num_rows > 0) {
                             $good = $goods->fetch_assoc();
 
+                            $sql = "select pic_str_small from goods_pics where id='" . $good['pic'] . "';";
+                            $result_pic = $db->getConn()->query($sql);
+                            $row_pic = $result_pic->fetch_assoc();
+
                             $result .= "<div class=\"acq_order_item\">
                     <div class=\"acq_good_pic\">
-                        <img src=\"http://www.sinaimg.cn/blog/developer/wiki/kongminglogo.jpg\" alt=\"\"/>
+                        <img src=\"" . $row_pic['pic_str_small'] . "\" class=\"acq_goodpic\" alt=\"\"/>
                     </div>
                     <div class=\"acq_good_details\">
                         <div class=\"acq_good_details_title\">{$good['name']}</div>
                         <div class=\"acq_good_details_description\">{$good['size']} 数量 x {$good_row['amount']}</div>
+                        <div class=\"acq_good_details_description\">&yen;{$good['price']}</div>
                     </div>
                 </div>";
                         }

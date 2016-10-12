@@ -111,6 +111,7 @@ $db = new DataBase;
 $db->DB_Initialize();
 
 
+$goods_single_price_prefix = "price_";
 $goods_amount_prefix = "amount_";
 
 
@@ -158,6 +159,13 @@ $post_fee = $_POST['customer_postfee'];
 $order_status = 0;
 $good_price .= $post_fee;
 foreach ($_POST['checkbox'] as $good_id) {
+
+    $good_single_price = $_POST[$goods_single_price_prefix . $good_id];
+    $sql = "update goods set price='{$good_single_price}' where id='{$good_id}'";
+    if ($db->getConn()->query($sql) === TRUE) {
+    } else {
+        echo "Error: " . $sql . " < br>" . $db->getConn()->error;
+    }
 
     $sql = "insert orders (order_id, good_id, amount, owner, state) values ({$order_id}, {$good_id}, {$_POST[$goods_amount_prefix.$good_id]}, {$owner}, 0)";
     if ($db->getConn()->query($sql) === TRUE) {
