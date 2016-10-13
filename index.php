@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<div class="acq_background"  class="acq_bottom_tab">
+<div class="acq_background" class="acq_bottom_tab">
     <div id="home_tab">
         <div class="acq_order_control_panel acq_row">
             <div class="acq_col acq_col_border acq_col_control_panel" id="create_order">
@@ -52,10 +52,10 @@
         </div>
         <div class="acq_section_bar acq_border_align">商品列表</div>
         <form class="acq_section_background " id="good_list"><!--acq_good_list_uncontent-->
-<!--            <div class="acq_circlediv acq_checkbox_small acq_checkbox_checked">-->
-<!--                <span class="glyphicon glyphicon-ok glyphicon-ok-small" aria-hidden="true"></span>-->
-<!--            </div>-->
-<!--            <div class="acq_circlediv acq_checkbox_small"></div>-->
+            <!--            <div class="acq_circlediv acq_checkbox_small acq_checkbox_checked">-->
+            <!--                <span class="glyphicon glyphicon-ok glyphicon-ok-small" aria-hidden="true"></span>-->
+            <!--            </div>-->
+            <!--            <div class="acq_circlediv acq_checkbox_small"></div>-->
             <!--暂无可选商品，请添加-->
             <!--        <div class="acq_form_item">-->
             <!--            <div class="acq_good_checkbox">-->
@@ -96,8 +96,9 @@
             <!--            </div>-->
             <!--        </div>-->
         </form>
-        <div class="acq_section_bar acq_bottom_placeholder">
-        </div>
+        <!--        <div class="acq_section_bar acq_bottom_placeholder">-->
+        <!--        </div>-->
+        <div class="acq_border_align acq_section_bar acq_section_bar_position"></div>
     </div>
 
     <div id="orders_tab" class="acq_bottom_tab">
@@ -121,42 +122,45 @@
 
         <div class="acq_border_align acq_section_bar acq_section_bar_position"></div>
         <div id="tochargefee_tab">
-            <div class="acq_section_background">
-                <div class="acq_order_title">
-                    <div class="acq_good_pic">
-                        <img src="http://www.sinaimg.cn/blog/developer/wiki/kongminglogo.jpg" class="acq_userpic"
-                             alt=""/>
-                    </div>
-                    <div class="acq_order_title_details">
-                        <div class="acq_good_details_title">王小宁</div>
-                        <div class="acq_good_details_description">下单时间: 2016-08-24 10:08</div>
-                    </div>
-                    <div class="acq_order_title_billing">
-                        <div class="acq_order_title_billing_status">待付款</div>
-                        <div class="acq_order_title_billing_total">&yen;<Strong>1818.00</Strong></div>
-                    </div>
-                </div>
-                <div class="acq_order_item">
-                    <div class="acq_good_pic">
-                        <img src="http://www.sinaimg.cn/blog/developer/wiki/kongminglogo.jpg" alt=""/>
-                    </div>
-                    <div class="acq_good_details">
-                        <div class="acq_good_details_title">澳洲专柜UGG皮毛一体雪地靴</div>
-                        <div class="acq_good_details_description">男款42码 数量 x 2</div>
-                    </div>
-                </div>
-                <div class="acq_order_oprt_bar">
-                    <div class="acq_order_oprt acq_order_oprt_send">
-                        <span class="glyphicon glyphicon-share">发送订单
-                    </div>
-                    <div class="acq_order_oprt">
-                        <span class="glyphicon glyphicon-edit">修改订单
-                    </div>
-                    <div class="acq_order_oprt acq_order_oprt_delete">
-                        <span class="glyphicon glyphicon-trash">删除订单
-                    </div>
-                </div>
+            <div id="order_list">
+                <!--            <div class="acq_section_background">-->
+                <!--                <div class="acq_order_title">-->
+                <!--                    <div class="acq_good_pic">-->
+                <!--                        <img src="http://www.sinaimg.cn/blog/developer/wiki/kongminglogo.jpg" class="acq_userpic"-->
+                <!--                             alt=""/>-->
+                <!--                    </div>-->
+                <!--                    <div class="acq_order_title_details">-->
+                <!--                        <div class="acq_good_details_title">王小宁</div>-->
+                <!--                        <div class="acq_good_details_description">下单时间: 2016-08-24 10:08</div>-->
+                <!--                    </div>-->
+                <!--                    <div class="acq_order_title_billing">-->
+                <!--                        <div class="acq_order_title_billing_status">待付款</div>-->
+                <!--                        <div class="acq_order_title_billing_total">&yen;<Strong>1818.00</Strong></div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="acq_order_item">-->
+                <!--                    <div class="acq_good_pic">-->
+                <!--                        <img src="http://www.sinaimg.cn/blog/developer/wiki/kongminglogo.jpg" alt=""/>-->
+                <!--                    </div>-->
+                <!--                    <div class="acq_good_details">-->
+                <!--                        <div class="acq_good_details_title">澳洲专柜UGG皮毛一体雪地靴</div>-->
+                <!--                        <div class="acq_good_details_description">男款42码 数量 x 2</div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="acq_order_oprt_bar">-->
+                <!--                    <div class="acq_order_oprt acq_order_oprt_send">-->
+                <!--                        <span class="glyphicon glyphicon-share">发送订单-->
+                <!--                    </div>-->
+                <!--                    <div class="acq_order_oprt">-->
+                <!--                        <span class="glyphicon glyphicon-edit">修改订单-->
+                <!--                    </div>-->
+                <!--                    <div class="acq_order_oprt acq_order_oprt_delete">-->
+                <!--                        <span class="glyphicon glyphicon-trash">删除订单-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--            </div>-->
             </div>
+            <div class="acq_border_align acq_section_bar acq_section_bar_position"></div>
         </div>
         <div id="todeliver_tab">
             <div class="acq_section_background">
@@ -171,7 +175,8 @@
                     </div>
                     <div class="acq_order_title_billing">
                         <div class="acq_order_title_billing_status">已支付</div>
-                        <div class="acq_order_title_billing_total acq_order_title_billing_total_finished">&yen;<Strong>1818.00</Strong></div>
+                        <div class="acq_order_title_billing_total acq_order_title_billing_total_finished">&yen;<Strong>1818.00</Strong>
+                        </div>
                     </div>
                 </div>
                 <div class="acq_order_address_bar">

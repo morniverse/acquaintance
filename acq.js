@@ -4,6 +4,7 @@ var good_pic = "";
 var good_pic_small = "";
 var good_selected = 0;
 var cur_good_page_size = 0;
+var cur_order_page_size = 0;
 //*****************
 
 $.weui = {};
@@ -230,82 +231,7 @@ $(document).ready(function () {
     $('#tochargefee_tab').show();
     $('#finished_tab').hide();
 
-    $.ajax({
-        url: 'get_goods.php',                  //the script to call to get data
-        data: "cur_good_page_size=" + cur_good_page_size,                        //you can insert url argumnets here to pass to api.php
-        //for example "id=5&parent=6"
-        dataType: 'json',                //data format
-        success: function (data)          //on recieve of reply
-        {
-            console.log(data);
-            // if (cur_good_page_size == 0)
-            //     $('#good_list').html(data['goods_str']);
-            // else {
-            //     if (data['page_step'] > 0)
-            //         $('#good_list').append(data['goods_str']);
-            // }
-            //
-            // cur_good_page_size += data['page_step'];
-            var goods_num = 0;
-            $.each(data, function (i, item) {
-                var form_input = $('<div class="acq_form_item acq_good_item"></div>');
-                var good_checkbox = $('<div class="acq_good_checkbox">');
-                var input = $("<input type=\"checkbox\" id='" + data[i].id + "' name='checkbox[]' value='" + data[i].id + "'>");
-                input.hide();
-                var label = $("<label for='" + data[i].id + "'><div class='acq_circlediv acq_checkbox_small'></div></label>");
-                good_checkbox.append(input);
-                good_checkbox.append(label);
-
-                form_input.append(good_checkbox);
-
-                var good_pic = $('<div class="acq_good_pic"></div>');
-                var img = $("<img src=\"" + data[i].pic_str_small + "\" class=\"acq_goodpic\" alt=\"\"/>");
-                good_pic.append(img);
-                form_input.append(good_pic);
-
-                var good_details = $('<div class="acq_good_details"></div>');
-                var good_details_title = $("<div class=\"acq_good_details_title\">" + data[i].name + "</div>");
-                var good_details_description = $("<div class=\"acq_good_details_description\">" + data[i].size + "</div>");
-                var good_details_amount_price_detail = $("<div class=\"acq_good_details_amount_price_detail\"></div>");
-                var info_goodlist_price = $('<div class="acq_info acq_info_goodlist"></div>');
-                var acq_input_price = $('<div class="acq_input"></div>');
-                var info_prefix_price = $('<div class="acq_info_prefix acq_info_prefix_goodlist">价格&yen;</div>');
-                var input_price = $("<input class=\"acq_input_suffix acq_price\" type=\"number\" name=\"price_" + data[i].id + "\" value=\"" + data[i].price + "\" placeholder='" + data[i].price + "'>");
-                input_price.parseNumber({format: "#####.00", locale: "us"});
-                input_price.formatNumber({format: "#####.00", locale: "us"});
-                acq_input_price.append(info_prefix_price);
-                acq_input_price.append(input_price);
-                info_goodlist_price.append(acq_input_price);
-                good_details_amount_price_detail.append(info_goodlist_price);
-                good_details.append(good_details_title);
-                good_details.append(good_details_description);
-                good_details.append(good_details_amount_price_detail);
-                form_input.append(good_details);
-
-                var info_goodlist_amount = $('<div class="acq_info acq_info_goodlist"></div>');
-                var acq_input_amount = $('<div class="acq_input"></div>');
-                var minus_goodlist = $('<div class="acq_info_prefix acq_plus_minus_goodlist acq_minus_goodlist"></div>');
-                minus_goodlist.append($('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>'));
-                var input_amount = $("<input class=\"acq_input_suffix acq_amount\" type=\"number\" name=\"amount_" + data[i].id + "\" value=\"1\">");
-                var plus_goodlist = $('<div class="acq_info_prefix acq_plus_minus_goodlist acq_plus_goodlist"></div>');
-                plus_goodlist.append($('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'));
-                acq_input_amount.append(minus_goodlist);
-                acq_input_amount.append(input_amount);
-                acq_input_amount.append(plus_goodlist);
-                info_goodlist_amount.append(acq_input_amount);
-                good_details_amount_price_detail.append(info_goodlist_amount);
-
-
-                $('#good_list').append(form_input);
-                // console.log(data[i].id);
-                goods_num = i;
-            });
-
-            if (goods_num > 1) {
-                $('#good_list').append($('<div class="acq_border_align acq_section_bar acq_section_bar_position"></div>'));
-            }
-        }
-    });
+    getGoodsPerPage();
 
     // $.ajax({
     //     url: 'get_accessToken.php',
@@ -503,21 +429,7 @@ $('#orders').click(function () {
     $('#home_tab').hide();
 
     var type = $('.acq_col_sub_cell_active').parent().attr('id');
-    $.ajax({
-        url: 'get_orders.php',
-        data: 'type=' + type + "&owner=1",
-        dataType: 'text',
-        success: function (data) {
-            // console.log(data);
-            if (type == "title_tochargefee") {
-                $('#tochargefee_tab').html(data);
-            } else if (type == "title_todeliver") {
-                $('#todeliver_tab').html(data);
-            } else if (type == "title_finished") {
-                $('#finished_tab').html(data);
-            }
-        }
-    });
+    getOrdersPerPage(type, 1);
 });
 
 $('#withdraw').click(function () {
@@ -624,3 +536,295 @@ function input_validation(type, data) {
     return true;
 }
 
+//get goods for just one page
+function getGoodsPerPage() {
+    $.ajax({
+        url: 'get_goods.php',                  //the script to call to get data
+        data: "cur_good_page_size=" + cur_good_page_size,                        //you can insert url argumnets here to pass to api.php
+        //for example "id=5&parent=6"
+        dataType: 'json',                //data format
+        success: function (data)          //on recieve of reply
+        {
+            console.log(data);
+            // if (cur_good_page_size == 0)
+            //     $('#good_list').html(data['goods_str']);
+            // else {
+            //     if (data['page_step'] > 0)
+            //         $('#good_list').append(data['goods_str']);
+            // }
+            //
+            // cur_good_page_size += data['page_step'];
+            var goods_num = 0;
+            $.each(data, function (i, item) {
+                var form_input = $('<div class="acq_form_item acq_good_item"></div>');
+                var good_checkbox = $('<div class="acq_good_checkbox">');
+                var input = $("<input type=\"checkbox\" id='" + data[i].id + "' name='checkbox[]' value='" + data[i].id + "'>");
+                input.hide();
+                var label = $("<label for='" + data[i].id + "'><div class='acq_circlediv acq_checkbox_small'></div></label>");
+                good_checkbox.append(input);
+                good_checkbox.append(label);
+
+                form_input.append(good_checkbox);
+
+                var good_pic = $('<div class="acq_good_pic"></div>');
+                var img = $("<img src=\"" + data[i].pic_str_small + "\" class=\"acq_goodpic\" alt=\"\"/>");
+                good_pic.append(img);
+                form_input.append(good_pic);
+
+                var good_details = $('<div class="acq_good_details"></div>');
+                var good_details_title = $("<div class=\"acq_good_details_title\">" + data[i].name + "</div>");
+                var good_details_description = $("<div class=\"acq_good_details_description\">" + data[i].size + "</div>");
+                var good_details_amount_price_detail = $("<div class=\"acq_good_details_amount_price_detail\"></div>");
+                var info_goodlist_price = $('<div class="acq_info acq_info_goodlist"></div>');
+                var acq_input_price = $('<div class="acq_input"></div>');
+                var info_prefix_price = $('<div class="acq_info_prefix acq_info_prefix_goodlist">价格&yen;</div>');
+                var input_price = $("<input class=\"acq_input_suffix acq_price\" type=\"number\" name=\"price_" + data[i].id + "\" value=\"" + data[i].price + "\" placeholder='" + data[i].price + "'>");
+                input_price.parseNumber({format: "#####.00", locale: "us"});
+                input_price.formatNumber({format: "#####.00", locale: "us"});
+                acq_input_price.append(info_prefix_price);
+                acq_input_price.append(input_price);
+                info_goodlist_price.append(acq_input_price);
+                good_details_amount_price_detail.append(info_goodlist_price);
+                good_details.append(good_details_title);
+                good_details.append(good_details_description);
+                good_details.append(good_details_amount_price_detail);
+                form_input.append(good_details);
+
+                var info_goodlist_amount = $('<div class="acq_info acq_info_goodlist"></div>');
+                var acq_input_amount = $('<div class="acq_input"></div>');
+                var minus_goodlist = $('<div class="acq_info_prefix acq_plus_minus_goodlist acq_minus_goodlist"></div>');
+                minus_goodlist.append($('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>'));
+                var input_amount = $("<input class=\"acq_input_suffix acq_amount\" type=\"number\" name=\"amount_" + data[i].id + "\" value=\"1\">");
+                var plus_goodlist = $('<div class="acq_info_prefix acq_plus_minus_goodlist acq_plus_goodlist"></div>');
+                plus_goodlist.append($('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'));
+                acq_input_amount.append(minus_goodlist);
+                acq_input_amount.append(input_amount);
+                acq_input_amount.append(plus_goodlist);
+                info_goodlist_amount.append(acq_input_amount);
+                good_details_amount_price_detail.append(info_goodlist_amount);
+
+
+                $('#good_list').append(form_input);
+                // console.log(data[i].id);
+                goods_num = i;
+            });
+
+            if (goods_num == 0) {
+                $.toast('已显示全部商品', 'cancel', function () {
+
+                });
+            } else {
+                cur_good_page_size += goods_num + 1;
+                console.log('cur_good_page_size:' + cur_good_page_size);
+            }
+
+            // if (goods_num > 1) {
+            //     $('#good_list').append($('<div class="acq_border_align acq_section_bar acq_section_bar_position"></div>'));
+            // }
+        }
+    });
+}
+
+//get orders for just one page
+function getOrdersPerPage(type, owner) {
+    console.log('cur_order_page_size:' + cur_order_page_size);
+    $.ajax({
+        url: 'get_orders.php',
+        data: 'type=' + type + "&owner=" + owner + "&cur_order_page_size=" + cur_order_page_size,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            // if (type == "title_tochargefee") {
+            //     $('#tochargefee_tab').html(data);
+            // } else if (type == "title_todeliver") {
+            //     $('#todeliver_tab').html(data);
+            // } else if (type == "title_finished") {
+            //     $('#finished_tab').html(data);
+            // }
+
+            var orders_num = 0;
+            $.each(data, function (i, item) {
+                var section_background = $('<div class="acq_section_background"></div>');
+                if (type == 'title_tochargefee') {
+                    var order_title = $('<div class="acq_order_title"></div>');
+                    var user_pic = $('<div class="acq_good_pic"></div>');
+                    var user_pic_src = $('<img src="http://www.sinaimg.cn/blog/developer/wiki/kongminglogo.jpg" class="acq_userpic" alt=""/>');
+                    user_pic.append(user_pic_src);
+                    var order_title_details = $('<div class="acq_order_title_details"></div>');
+                    var good_details_title = $('<div class=\"acq_good_details_title\">' + data[i].customer_name + '</div>');
+                    var good_details_description = $('<div class=\"acq_good_details_description\">下单时间: ' + data[i].create_date + '</div>');
+                    order_title_details.append(good_details_title);
+                    order_title_details.append(good_details_description);
+                    var order_title_billing = $('<div class="acq_order_title_billing"></div>');
+                    var order_title_billing_status = $('<div class="acq_order_title_billing_status">待付款</div>');
+                    var order_title_billing_total = $('<div class=\"acq_order_title_billing_total\">&yen;<Strong>' + data[i].good_price + '</Strong></div>');
+                    order_title_billing.append(order_title_billing_status);
+                    order_title_billing.append(order_title_billing_total);
+                    order_title.append(user_pic);
+                    order_title.append(order_title_details);
+                    order_title.append(order_title_billing);
+                    section_background.append(order_title);
+
+                    $.each(data[i].json_good, function (j, good_item) {
+                        var order_item = $('<div class="acq_order_item"></div>');
+                        var good_pic = $('<div class="acq_good_pic"></div>');
+                        var good_pic_src = $('<img src=\"' + good_item.pic_str_small + '\" class=\"acq_goodpic\" alt=\"\"/>');
+                        good_pic.append(good_pic_src);
+                        var good_details = $('<div class="acq_good_details"></div>');
+                        var good_details_title = $('<div class=\"acq_good_details_title\">' + good_item.name + '</div>');
+                        var good_details_description1 = $('<div class=\"acq_good_details_description\">' + good_item.size + ' 数量 x ' + good_item.amount + '</div>');
+                        var good_details_description2 = $('<div class=\"acq_good_details_description\">&yen;' + good_item.price + '</div>');
+                        good_details.append(good_details_title);
+                        good_details.append(good_details_description1);
+                        good_details.append(good_details_description2);
+                        order_item.append(good_pic);
+                        order_item.append(good_details);
+                        section_background.append(order_item);
+                    });
+
+                    var order_oprt_bar = $('<div class="acq_order_oprt_bar"></div>');
+                    var order_oprt_send = $('<div class="acq_order_oprt acq_order_oprt_send"></div>');
+                    var glyphicon_share = $('<span class="glyphicon glyphicon-share">发送订单</span>');
+                    order_oprt_send.append(glyphicon_share);
+                    var order_oprt_edit = $('<div class="acq_order_oprt"></div>');
+                    var glyphicon_edit = $('<span class="glyphicon glyphicon-edit">修改订单</span>');
+                    order_oprt_edit.append(glyphicon_edit);
+                    var order_oprt_delete = $('<div class="acq_order_oprt acq_order_oprt_delete"></div>');
+                    var glyphicon_trash = $('<span class="glyphicon glyphicon-trash">删除订单</span>');
+                    order_oprt_delete.append(glyphicon_trash);
+                    order_oprt_bar.append(order_oprt_send);
+                    order_oprt_bar.append(order_oprt_edit);
+                    order_oprt_bar.append(order_oprt_delete);
+                    section_background.append(order_oprt_bar);
+                } else if (type == 'title_todeliver') {
+
+                } else if (type == 'title_finished') {
+
+                }
+
+                $('#order_list').append(section_background);
+                var section_bar = $('<div class="acq_border_align acq_section_bar"></div>');
+                $('#order_list').append(section_bar);
+                orders_num = i;
+            });
+
+            if (orders_num == 0) {
+                $.toast('已显示全部订单', 'cancel', function () {
+
+                });
+            } else {
+                cur_order_page_size += orders_num + 1;
+                console.log('cur_order_page_size:' + cur_order_page_size);
+            }
+        }
+    });
+}
+
+
+//for scroll bottom event handling
+var height = 0;
+
+//获取滚动条上下滑动的距离
+function getScrollTop() {
+    var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+    if (document.body) {
+        bodyScrollTop = document.body.scrollTop;
+    }
+    if (document.documentElement) {
+        documentScrollTop = document.documentElement.scrollTop;
+    }
+    scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+    return scrollTop;
+}
+
+
+//页面的总高度
+function getScrollHeight() {
+    var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+    if (document.body) {
+        bodyScrollHeight = document.body.scrollHeight;
+    }
+    if (document.documentElement) {
+        documentScrollHeight = document.documentElement.scrollHeight;
+    }
+    scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+    return scrollHeight;
+}
+
+
+//浏览器显示窗口的高度
+function getWindowHeight() {
+    var windowHeight = 0;
+    if (document.compatMode == "CSS1Compat") {
+        windowHeight = document.documentElement.clientHeight;
+    } else {
+        windowHeight = document.body.clientHeight;
+    }
+    return windowHeight;
+}
+
+var timeout = false;
+var result;
+window.onscroll = function () {
+    //阀门算法思想：setTimeout处理完成后开启阀门，clearTimeout清理后关闭阀门
+    if (timeout) {
+        clearTimeout(result);
+        timeout = false;
+    }
+    result = setTimeout(function () {
+        // if (getScrollTop() + getWindowHeight() == getScrollHeight()) {
+        if ($('#home').hasClass('acq_bottom_panel_active')) {
+            console.log('acq_bottom_tab.outerHeight with margin:' + parseInt($('#home_tab').outerHeight(true)));
+            // console.log('acq_bottom_tab.outerHeight:' + parseInt($('#home_tab').outerHeight()))
+            // console.log('acq_bottom_tab.heigth:' + parseInt($('#home_tab').height()));
+            console.log('browser view heigth:' + parseInt(getWindowHeight()));
+            console.log('total height:' + parseInt(getScrollHeight()));
+            console.log('scrolled height:' + parseInt(getScrollTop()));
+            if (getScrollTop() + getWindowHeight() >= $('#home_tab').outerHeight(true)) {
+                //alert("you are in the bottom!");
+                //保存触底时滚动条滑动的高度，作为重置滚动条位置的依据
+                height = getScrollTop();
+                //alert(getScrollHeight());
+                //alert(getScrollTop());
+                //alert(getWindowHeight());
+                // alert("bottom");
+                // if (cal < document.getElementById("mainForm:dataList:countPage").value) {
+                //     cal++;
+                //     //alert(document.getElementById("mainForm:dataList:countPage").value);
+                //     //getNewDatas(20 * index, 20);
+                //     alert("bottom");
+                //     index++;
+                // }
+                getGoodsPerPage();
+            }
+        } else if ($('#orders').hasClass('acq_bottom_panel_active')) {
+            var type = $('.acq_col_sub_cell_active').parent().attr('id');
+
+            if (type == 'title_tochargefee') {
+                console.log('tochargefee_tab.outerHeight with margin:' + parseInt($('#tochargefee_tab').outerHeight(true)));
+                // console.log('acq_bottom_tab.outerHeight:' + parseInt($('#home_tab').outerHeight()))
+                // console.log('acq_bottom_tab.heigth:' + parseInt($('#home_tab').height()));
+                console.log('browser view heigth:' + parseInt(getWindowHeight()));
+                console.log('total height:' + parseInt(getScrollHeight()));
+                console.log('scrolled height:' + parseInt(getScrollTop()));
+                if (getScrollTop() + getWindowHeight() >= ($('#tochargefee_tab').outerHeight(true))) {
+
+                    //保存触底时滚动条滑动的高度，作为重置滚动条位置的依据
+                    height = getScrollTop();
+                    getOrdersPerPage(type, 1);
+                }
+            } else if (type == 'title_todeliver') {
+
+            } else if (type == 'title_finished') {
+
+            }
+        }
+    }, 1000);
+    timeout = true;
+};
+
+
+//重置滚动条的位置到上次滚动的位置
+function setOnscroll() {
+    window.scrollTo(0, height);
+}

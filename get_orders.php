@@ -331,23 +331,32 @@ $db = new DataBase;
 $db->DB_Initialize();
 
 $type = $_GET['type'];
+$cur_order_page_size = $_GET['cur_order_page_size'];
 
 $type_map = new stdClass();
 $type_map->title_tochargefee = 0;
 $type_map->title_todeliver = 1;
 $type_map->title_finished = 2;
 
+$actual_page_step = 0;
+$page_step = 5;
+$json = array();
+
 $result = "";
 switch ($type_map->$type) {
     case 0: {
-        $sql = "select order_id, customer, good_price, post_fee, create_date from order_status where owner='{$_GET['owner']}' and state='0' order by id desc";
+        $sql = "select order_id, customer, good_price, post_fee, create_date from order_status where owner='{$_GET['owner']}' and state='0' order by id desc limit {$page_step} offset {$cur_order_page_size}";
         $order_result = $db->getConn()->query($sql);
         if ($order_result->num_rows > 0) {
             while ($order_row = $order_result->fetch_assoc()) {
+                $json_good = array();
+
                 $customer = $order_row['customer'];
                 $sql = "select name from users where id='{$customer}'";
                 $customer_result = $db->getConn()->query($sql);
                 $customer_name = $customer_result->fetch_assoc();
+
+                $order_row['customer_name'] = $customer_name['name'];
 
                 $result .= "<div class=\"acq_section_background\">
                 <div class=\"acq_order_title\">
@@ -380,6 +389,12 @@ switch ($type_map->$type) {
                             $result_pic = $db->getConn()->query($sql);
                             $row_pic = $result_pic->fetch_assoc();
 
+                            $good_row['owner'] = $good['owner'];
+                            $good_row['name'] = $good['name'];
+                            $good_row['size'] = $good['size'];
+                            $good_row['price'] = $good['price'];
+                            $good_row['pic_str_small'] = $row_pic['pic_str_small'];
+
                             $result .= "<div class=\"acq_order_item\">
                     <div class=\"acq_good_pic\">
                         <img src=\"" . $row_pic['pic_str_small'] . "\" class=\"acq_goodpic\" alt=\"\"/>
@@ -391,8 +406,10 @@ switch ($type_map->$type) {
                     </div>
                 </div>";
                         }
+                        $json_good[] = $good_row;
                     }
                 }
+
 
                 $result .= "<div class=\"acq_order_oprt_bar\">
                     <div class=\"acq_order_oprt acq_order_oprt_send\">
@@ -408,6 +425,9 @@ switch ($type_map->$type) {
 
                 $result .= "</div>";
                 $result .= "<div class=\"acq_border_align acq_section_bar acq_section_bar_position\"></div>";
+
+                $order_row['json_good'] = $json_good;
+                $json[] = $order_row;
             }
         }
 
@@ -423,4 +443,4 @@ switch ($type_map->$type) {
 
 $db->DB_Cleanup();
 
-echo $result;
+echo json_encode($json);
